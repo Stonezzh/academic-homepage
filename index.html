@@ -4,65 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesong Zheng - Academic Homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Times New Roman', serif; line-height: 1.6; color: #333; background: #fff; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Times New Roman', serif; line-height: 1.6; color: #333; background: #fafafa; padding-top: 80px; }
         .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
+        /* Color Theme */
+        :root {
+            --primary-blue: #003366;
+            --light-blue: #e3f2fd;
+            --accent-orange: #ff9800;
+            --text-gray: #666;
+        }
+
         /* Header */
-        header { border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; position: relative; }
-        header h1 { font-size: 2em; font-weight: normal; margin-bottom: 5px; }
-        header .subtitle { font-size: 1.1em; color: #666; }
-        .lang-switch { position: absolute; top: 0; right: 0; cursor: pointer; padding: 5px 10px; border: 1px solid #333; font-size: 0.9em; }
-        .lang-switch:hover { background: #f0f0f0; }
+        header { background: #fff; border-bottom: 2px solid var(--primary-blue); padding: 20px 0; margin-bottom: 30px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: all 0.3s; }
+        header.scrolled { padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-content { max-width: 900px; margin: 0 auto; padding: 0 20px; position: relative; }
+        header h1 { font-size: 2em; font-weight: normal; margin-bottom: 5px; color: var(--primary-blue); }
+        header .subtitle { font-size: 1.1em; color: var(--text-gray); }
+        .lang-switch { position: absolute; top: 0; right: 20px; cursor: pointer; padding: 5px 10px; border: 1px solid var(--primary-blue); color: var(--primary-blue); font-size: 0.9em; transition: all 0.3s; }
+        .lang-switch:hover { background: var(--primary-blue); color: #fff; }
 
         /* Navigation */
-        nav { margin: 20px 0; }
-        nav a { margin-right: 20px; text-decoration: none; color: #000; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
+        nav { background: #fff; position: fixed; top: 80px; left: 0; right: 0; z-index: 99; border-bottom: 1px solid #ddd; transition: all 0.3s; }
+        nav.scrolled { top: 65px; }
+        .nav-content { max-width: 900px; margin: 0 auto; padding: 15px 20px; }
+        nav a { margin-right: 20px; text-decoration: none; color: var(--primary-blue); font-weight: bold; transition: all 0.3s; }
+        nav a:hover { color: #0055aa; text-decoration: underline; }
 
         /* Sections */
-        section { margin-bottom: 40px; }
-        section h2 { font-size: 1.5em; font-weight: normal; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
+        section { margin-bottom: 50px; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        section h2 { font-size: 1.5em; font-weight: normal; border-bottom: 2px solid var(--primary-blue); padding-bottom: 10px; margin-bottom: 20px; color: var(--primary-blue); }
+        section h2 i { margin-right: 10px; }
 
         /* About */
         .about-content { display: flex; gap: 30px; }
-        .avatar-placeholder { width: 150px; height: 150px; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #999; }
+        .avatar-placeholder { width: 150px; height: 150px; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #999; border: 2px solid var(--primary-blue); border-radius: 8px; overflow: hidden; }
         .bio { flex: 1; }
-        .bio p { margin-bottom: 10px; }
+        .bio p { margin-bottom: 15px; text-align: justify; }
 
-        /* Publications */
-        .pub-item { margin-bottom: 20px; }
-        .pub-title { font-weight: bold; }
-        .pub-authors { color: #555; font-style: italic; }
-        .pub-venue { color: #666; }
+        /* Publications - Card Style */
+        .pub-card { background: var(--light-blue); padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
+        .pub-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .pub-title { font-weight: bold; color: var(--primary-blue); margin-bottom: 8px; font-size: 1.05em; }
+        .pub-authors { color: #555; font-style: italic; margin-bottom: 5px; font-size: 0.95em; }
+        .pub-venue { color: var(--text-gray); margin-bottom: 8px; }
+        .journal-tag { display: inline-block; background: var(--accent-orange); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-top: 5px; }
 
         /* Patents & Awards */
-        .patent-item, .award-item { margin-bottom: 10px; }
-        .award-category { font-weight: bold; margin-top: 15px; margin-bottom: 5px; }
+        .patent-item, .award-item { margin-bottom: 12px; padding-left: 20px; position: relative; }
+        .patent-item:before, .award-item:before { content: "•"; position: absolute; left: 5px; color: var(--primary-blue); font-weight: bold; }
+        .award-category { font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: var(--primary-blue); font-size: 1.1em; }
 
         /* Projects */
-        .project-item { margin-bottom: 15px; }
-        .project-title { font-weight: bold; }
+        .project-item { margin-bottom: 15px; padding: 15px; background: var(--light-blue); border-radius: 6px; border-left: 4px solid var(--primary-blue); }
 
         /* Links */
-        .external-links { margin-top: 10px; }
-        .external-links a { margin-right: 15px; color: #0066cc; text-decoration: none; }
-        .external-links a:hover { text-decoration: underline; }
+        .external-links { margin-top: 15px; }
+        .external-links a { margin-right: 15px; color: var(--primary-blue); text-decoration: none; transition: all 0.3s; }
+        .external-links a:hover { color: #0055aa; text-decoration: underline; }
 
         /* Footer */
-        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; color: #666; font-size: 0.9em; }
+        footer { margin-top: 50px; padding: 20px; background: #fff; border-top: 2px solid var(--primary-blue); text-align: center; color: var(--text-gray); font-size: 0.9em; border-radius: 8px; }
 
         /* Mobile Menu */
-        .mobile-menu-btn { display: none; position: absolute; top: 0; left: 0; cursor: pointer; padding: 10px; font-size: 1.5em; z-index: 1001; }
+        .mobile-menu-btn { display: none; position: fixed; top: 20px; left: 20px; cursor: pointer; padding: 10px; font-size: 1.5em; z-index: 1001; background: var(--primary-blue); color: #fff; border-radius: 5px; }
         .mobile-nav { display: none; position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; background: #fff; box-shadow: 2px 0 10px rgba(0,0,0,0.3); z-index: 1000; transition: left 0.3s; padding: 60px 20px 20px; overflow-y: auto; }
         .mobile-nav.active { left: 0; }
-        .mobile-nav a { display: block; padding: 15px 0; border-bottom: 1px solid #eee; text-decoration: none; color: #000; font-weight: bold; }
+        .mobile-nav a { display: block; padding: 15px 0; border-bottom: 1px solid #eee; text-decoration: none; color: var(--primary-blue); font-weight: bold; }
         .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999; }
         .mobile-overlay.active { display: block; }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            body { padding-top: 140px; }
             .container { padding: 15px; }
             header h1 { font-size: 1.5em; }
             header .subtitle { font-size: 1em; }
@@ -72,11 +90,12 @@
             nav { display: none; }
             .mobile-nav { display: block; }
 
+            section { padding: 20px; }
             .about-content { flex-direction: column; align-items: center; }
             .avatar-placeholder { width: 120px; height: 120px; }
 
             section h2 { font-size: 1.3em; }
-            .pub-item { font-size: 0.95em; }
+            .pub-card { padding: 15px; font-size: 0.95em; }
             .patent-item, .award-item, .project-item { font-size: 0.95em; }
 
             .external-links a { display: inline-block; margin: 5px 10px 5px 0; }
@@ -116,20 +135,20 @@ const DATA = {
         orcid: "0000-0002-1923-7134"
     },
 
-    // 论文列表
+    // 论文列表（添加 quartile 和 impactFactor 字段，格式：quartile: "Q1", impactFactor: "5.6"）
     publications: [
-        { authors: "Zheng, Lesong; Guo, Yunbo; Liang, Ying; Wang, Lirong; Meng, Siyu; Xu, Yiwen; Liu, Lei; Song, Yizhi; Tang, Yuguo", title: "GMDM-MoE: A biologically-inspired growth-to-morphology and dual-magnification mixture-of-experts for bacterial detection", venue: "Biomedical Signal Processing and Control", volume: "112", pages: "108639", year: 2026, publisher: "Elsevier" },
-        { authors: "Liang, Ying; Zheng, Lesong; Li, Zihao; Meng, Siyu; Song, Yizhi; Xu, Yiwen; Wang, Lirong", title: "Bacterial perception-enhanced detection transformer in time-lapse images", venue: "Biomedical Signal Processing and Control", volume: "113", pages: "109160", year: 2026, publisher: "Elsevier" },
-        { authors: "Zheng, Lesong; Guo, Yunbo; Liang, Ying; Wang, Lirong; Meng, Siyu; Song, Yizhi; Tang, Yuguo", title: "TrCL-AGS: A Universal Sequential Triple-Stage Contrastive Learning Framework for Bacterial Detection With Across-Growth-Stage Information", venue: "IEEE Internet of Things Journal", volume: "12", number: "10", pages: "14886-14896", year: 2025, publisher: "IEEE" },
-        { authors: "Liu, Xingyu; Zheng, Lesong; Cheng, Yuhao; Zhu, Wenliang; Li, Jiacheng; Liu, Jiangxu; Lu, Sisi; You, Binquan; Wang, Lirong", title: "End-to-end ECG signal compression based on temporal information and residual compensation", venue: "Circuits, Systems, and Signal Processing", volume: "44", number: "4", pages: "2779-2801", year: 2025, publisher: "Springer" },
-        { authors: "Meng, Siyu; Xu, Yiwen; Wang, Jingkai; Zhang, Zhiwei; Mao, Xin; Wang, Yimai; Zhang, Changsong; Wang, Ting; Shen, Yuanheng; Li, Hui", title: "Rapid antimicrobial susceptibility testing (AST) based on in-situ time-lapse imaging of microcolonies", venue: "Sensors and Actuators B: Chemical", pages: "139012", year: 2025, publisher: "Elsevier" },
-        { authors: "Ma, Gang; Zheng, Lesong; Zhu, Wenliang; Xing, Xiaoman; Wang, Lirong; Yu, Yong", title: "Prediction of arterial blood pressure waveforms based on multi-task learning", venue: "Biomedical Signal Processing and Control", volume: "92", pages: "106070", year: 2024, publisher: "Elsevier" },
-        { authors: "Tang, Hui; Ma, Gang; Qiu, Lishen; Zheng, Lesong; Bao, Rui; Liu, Jing; Wang, Lirong", title: "Blood pressure estimation based on PPG and ECG signals using knowledge distillation", venue: "Cardiovascular Engineering and Technology", volume: "15", number: "1", pages: "39-51", year: 2024, publisher: "Springer International Publishing Cham" },
-        { authors: "Zhu, Wenliang; Zheng, Lesong; Cheng, Ao; Qiu, Lishen; Chen, Yuhang; Wang, Lirong", title: "Two-stage detection method of supraventricular and ventricular ectopic beats based on sequential artificial features and heartbeats", venue: "Biomedical Signal Processing and Control", volume: "85", pages: "104804", year: 2023, publisher: "Elsevier" },
-        { authors: "Ma, Gang; Chen, Yuhang; Zhu, Wenliang; Zheng, Lesong; Tang, Hui; Yu, Yong; Wang, Lirong", title: "Evaluating and visualizing the contribution of ECG characteristic waveforms for PPG-based blood pressure estimation", venue: "Micromachines", volume: "13", number: "9", pages: "1438", year: 2022, publisher: "MDPI" },
-        { authors: "Zhu, Wenliang; Ma, Gang; Zheng, Lesong; Chen, Yuhang; Qiu, Lishen; Wang, Lirong", title: "Inter-patient arrhythmia identification method with RR-intervals and convolutional neural networks", venue: "Physiological Measurement", volume: "43", number: "3", pages: "35003", year: 2022, publisher: "IOP Publishing" },
-        { authors: "Zheng, Lesong; Zhang, Miao; Qiu, Lishen; Ma, Gang; Zhu, Wenliang; Wang, Lirong", title: "A multi-scale convolutional neural network for heartbeat classification", venue: "2021 IEEE 20th International Conference on Trust, Security and Privacy in Computing and Communications (TrustCom)", pages: "1488-1492", year: 2021, publisher: "IEEE" },
-        { authors: "Zhu, Wenliang; Ma, Gang; Chen, Yuhang; Qiu, Lishen; Zheng, Lesong; Wang, Lirong", title: "A novel method for detecting noise segments in ECG signals", venue: "2021 IEEE 20th International Conference on Trust, Security and Privacy in Computing and Communications (TrustCom)", pages: "1570-1574", year: 2021, publisher: "IEEE" }
+        { authors: "Zheng, Lesong; Guo, Yunbo; Liang, Ying; Wang, Lirong; Meng, Siyu; Xu, Yiwen; Liu, Lei; Song, Yizhi; Tang, Yuguo", title: "GMDM-MoE: A biologically-inspired growth-to-morphology and dual-magnification mixture-of-experts for bacterial detection", venue: "Biomedical Signal Processing and Control", volume: "112", pages: "108639", year: 2026, publisher: "Elsevier", quartile: "Q1", impactFactor: "5.0" },
+        { authors: "Liang, Ying; Zheng, Lesong; Li, Zihao; Meng, Siyu; Song, Yizhi; Xu, Yiwen; Wang, Lirong", title: "Bacterial perception-enhanced detection transformer in time-lapse images", venue: "Biomedical Signal Processing and Control", volume: "113", pages: "109160", year: 2026, publisher: "Elsevier", quartile: "Q1", impactFactor: "5.0" },
+        { authors: "Zheng, Lesong; Guo, Yunbo; Liang, Ying; Wang, Lirong; Meng, Siyu; Song, Yizhi; Tang, Yuguo", title: "TrCL-AGS: A Universal Sequential Triple-Stage Contrastive Learning Framework for Bacterial Detection With Across-Growth-Stage Information", venue: "IEEE Internet of Things Journal", volume: "12", number: "10", pages: "14886-14896", year: 2025, publisher: "IEEE", quartile: "Q1", impactFactor: "8.2" },
+        { authors: "Liu, Xingyu; Zheng, Lesong; Cheng, Yuhao; Zhu, Wenliang; Li, Jiacheng; Liu, Jiangxu; Lu, Sisi; You, Binquan; Wang, Lirong", title: "End-to-end ECG signal compression based on temporal information and residual compensation", venue: "Circuits, Systems, and Signal Processing", volume: "44", number: "4", pages: "2779-2801", year: 2025, publisher: "Springer", quartile: "Q2", impactFactor: "2.3" },
+        { authors: "Meng, Siyu; Xu, Yiwen; Wang, Jingkai; Zhang, Zhiwei; Mao, Xin; Wang, Yimai; Zhang, Changsong; Wang, Ting; Shen, Yuanheng; Li, Hui", title: "Rapid antimicrobial susceptibility testing (AST) based on in-situ time-lapse imaging of microcolonies", venue: "Sensors and Actuators B: Chemical", pages: "139012", year: 2025, publisher: "Elsevier", quartile: "Q1", impactFactor: "8.4" },
+        { authors: "Ma, Gang; Zheng, Lesong; Zhu, Wenliang; Xing, Xiaoman; Wang, Lirong; Yu, Yong", title: "Prediction of arterial blood pressure waveforms based on multi-task learning", venue: "Biomedical Signal Processing and Control", volume: "92", pages: "106070", year: 2024, publisher: "Elsevier", quartile: "Q1", impactFactor: "5.0" },
+        { authors: "Tang, Hui; Ma, Gang; Qiu, Lishen; Zheng, Lesong; Bao, Rui; Liu, Jing; Wang, Lirong", title: "Blood pressure estimation based on PPG and ECG signals using knowledge distillation", venue: "Cardiovascular Engineering and Technology", volume: "15", number: "1", pages: "39-51", year: 2024, publisher: "Springer International Publishing Cham", quartile: "Q2", impactFactor: "3.0" },
+        { authors: "Zhu, Wenliang; Zheng, Lesong; Cheng, Ao; Qiu, Lishen; Chen, Yuhang; Wang, Lirong", title: "Two-stage detection method of supraventricular and ventricular ectopic beats based on sequential artificial features and heartbeats", venue: "Biomedical Signal Processing and Control", volume: "85", pages: "104804", year: 2023, publisher: "Elsevier", quartile: "Q1", impactFactor: "5.0" },
+        { authors: "Ma, Gang; Chen, Yuhang; Zhu, Wenliang; Zheng, Lesong; Tang, Hui; Yu, Yong; Wang, Lirong", title: "Evaluating and visualizing the contribution of ECG characteristic waveforms for PPG-based blood pressure estimation", venue: "Micromachines", volume: "13", number: "9", pages: "1438", year: 2022, publisher: "MDPI", quartile: "Q2", impactFactor: "3.4" },
+        { authors: "Zhu, Wenliang; Ma, Gang; Zheng, Lesong; Chen, Yuhang; Qiu, Lishen; Wang, Lirong", title: "Inter-patient arrhythmia identification method with RR-intervals and convolutional neural networks", venue: "Physiological Measurement", volume: "43", number: "3", pages: "35003", year: 2022, publisher: "IOP Publishing", quartile: "Q2", impactFactor: "3.2" },
+        { authors: "Zheng, Lesong; Zhang, Miao; Qiu, Lishen; Ma, Gang; Zhu, Wenliang; Wang, Lirong", title: "A multi-scale convolutional neural network for heartbeat classification", venue: "2021 IEEE 20th International Conference on Trust, Security and Privacy in Computing and Communications (TrustCom)", pages: "1488-1492", year: 2021, publisher: "IEEE", quartile: "", impactFactor: "" },
+        { authors: "Zhu, Wenliang; Ma, Gang; Chen, Yuhang; Qiu, Lishen; Zheng, Lesong; Wang, Lirong", title: "A novel method for detecting noise segments in ECG signals", venue: "2021 IEEE 20th International Conference on Trust, Security and Privacy in Computing and Communications (TrustCom)", pages: "1570-1574", year: 2021, publisher: "IEEE", quartile: "", impactFactor: "" }
     ],
 
     // 发明专利
@@ -228,79 +247,98 @@ function closeMobileMenu() {
     document.querySelector('.mobile-overlay').classList.remove('active');
 }
 
+// Scroll effect for fixed navbar
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+        nav.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+        nav.classList.remove('scrolled');
+    }
+});
+
 function render() {
     document.documentElement.lang = currentLang;
     document.getElementById('app').innerHTML = `
         <div class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</div>
         <div class="mobile-overlay" onclick="closeMobileMenu()"></div>
         <div class="mobile-nav">
-            <a href="#about" onclick="closeMobileMenu()">${t(DATA.ui.nav.about)}</a>
-            <a href="#research" onclick="closeMobileMenu()">${t(DATA.ui.nav.research)}</a>
-            <a href="#publications" onclick="closeMobileMenu()">${t(DATA.ui.nav.publications)}</a>
-            <a href="#patents" onclick="closeMobileMenu()">${t(DATA.ui.nav.patents)}</a>
-            <a href="#awards" onclick="closeMobileMenu()">${t(DATA.ui.nav.awards)}</a>
-            <a href="#projects" onclick="closeMobileMenu()">${t(DATA.ui.nav.projects)}</a>
-            <a href="#contact" onclick="closeMobileMenu()">${t(DATA.ui.nav.contact)}</a>
+            <a href="#about" onclick="closeMobileMenu()"><i class="fas fa-user"></i> ${t(DATA.ui.nav.about)}</a>
+            <a href="#research" onclick="closeMobileMenu()"><i class="fas fa-microscope"></i> ${t(DATA.ui.nav.research)}</a>
+            <a href="#publications" onclick="closeMobileMenu()"><i class="fas fa-file-alt"></i> ${t(DATA.ui.nav.publications)}</a>
+            <a href="#patents" onclick="closeMobileMenu()"><i class="fas fa-lightbulb"></i> ${t(DATA.ui.nav.patents)}</a>
+            <a href="#awards" onclick="closeMobileMenu()"><i class="fas fa-trophy"></i> ${t(DATA.ui.nav.awards)}</a>
+            <a href="#projects" onclick="closeMobileMenu()"><i class="fas fa-project-diagram"></i> ${t(DATA.ui.nav.projects)}</a>
+            <a href="#contact" onclick="closeMobileMenu()"><i class="fas fa-envelope"></i> ${t(DATA.ui.nav.contact)}</a>
         </div>
 
         <header>
-            <div class="lang-switch" onclick="switchLang()">${t(DATA.ui.langSwitch)}</div>
-            <h1>${t(DATA.name)}</h1>
-            <div class="subtitle">${t(DATA.title)}</div>
+            <div class="header-content">
+                <div class="lang-switch" onclick="switchLang()">${t(DATA.ui.langSwitch)}</div>
+                <h1>${t(DATA.name)}</h1>
+                <div class="subtitle">${t(DATA.title)}</div>
+            </div>
         </header>
 
         <nav>
-            <a href="#about">${t(DATA.ui.nav.about)}</a>
-            <a href="#research">${t(DATA.ui.nav.research)}</a>
-            <a href="#publications">${t(DATA.ui.nav.publications)}</a>
-            <a href="#patents">${t(DATA.ui.nav.patents)}</a>
-            <a href="#awards">${t(DATA.ui.nav.awards)}</a>
-            <a href="#projects">${t(DATA.ui.nav.projects)}</a>
-            <a href="#contact">${t(DATA.ui.nav.contact)}</a>
+            <div class="nav-content">
+                <a href="#about"><i class="fas fa-user"></i> ${t(DATA.ui.nav.about)}</a>
+                <a href="#research"><i class="fas fa-microscope"></i> ${t(DATA.ui.nav.research)}</a>
+                <a href="#publications"><i class="fas fa-file-alt"></i> ${t(DATA.ui.nav.publications)}</a>
+                <a href="#patents"><i class="fas fa-lightbulb"></i> ${t(DATA.ui.nav.patents)}</a>
+                <a href="#awards"><i class="fas fa-trophy"></i> ${t(DATA.ui.nav.awards)}</a>
+                <a href="#projects"><i class="fas fa-project-diagram"></i> ${t(DATA.ui.nav.projects)}</a>
+                <a href="#contact"><i class="fas fa-envelope"></i> ${t(DATA.ui.nav.contact)}</a>
+            </div>
         </nav>
 
+        <div class="container">
         <section id="about">
-            <h2>${t(DATA.ui.nav.about)}</h2>
+            <h2><i class="fas fa-user"></i> ${t(DATA.ui.nav.about)}</h2>
             <div class="about-content">
                 <div class="avatar-placeholder">
-                    <img src="images/mine.png" alt="My Photo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    <img src="images/mine.png" alt="My Photo" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div class="bio">
-                    
+                    <p>${t(DATA.bio)}</p>
                     <h3>${t(DATA.ui.education)}</h3>
                     ${DATA.education.map(edu => `<p>${t(edu)}</p>`).join('')}
                     <div class="external-links">
                         <strong>${t(DATA.ui.externalLinks)}:</strong>
-                        <a href="${DATA.links.googleScholar}" target="_blank">Google Scholar</a>
-                        <a href="https://orcid.org/${DATA.links.orcid}" target="_blank">ORCID</a>
+                        <a href="${DATA.links.googleScholar}" target="_blank"><i class="fas fa-graduation-cap"></i> Google Scholar</a>
+                        <a href="https://orcid.org/${DATA.links.orcid}" target="_blank"><i class="fab fa-orcid"></i> ORCID</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="research">
-            <h2>${t(DATA.ui.nav.research)}</h2>
+            <h2><i class="fas fa-microscope"></i> ${t(DATA.ui.nav.research)}</h2>
             <p>${t(DATA.bio)}</p>
         </section>
 
         <section id="publications">
-            <h2>${t(DATA.ui.nav.publications)}</h2>
+            <h2><i class="fas fa-file-alt"></i> ${t(DATA.ui.nav.publications)}</h2>
             ${DATA.publications.map(pub => `
-                <div class="pub-item">
+                <div class="pub-card">
                     <div class="pub-authors">${pub.authors}</div>
                     <div class="pub-title">${pub.title}</div>
                     <div class="pub-venue">${pub.venue}${pub.volume ? `, ${pub.volume}` : ''}${pub.number ? `(${pub.number})` : ''}${pub.pages ? `: ${pub.pages}` : ''}, ${pub.year}. ${pub.publisher}.</div>
+                    ${pub.quartile && pub.impactFactor ? `<span class="journal-tag">${pub.quartile} | IF: ${pub.impactFactor}</span>` : ''}
                 </div>
             `).join('')}
         </section>
 
         <section id="patents">
-            <h2>${t(DATA.ui.nav.patents)}</h2>
+            <h2><i class="fas fa-lightbulb"></i> ${t(DATA.ui.nav.patents)}</h2>
             ${DATA.patents.map(patent => `<div class="patent-item">${patent}</div>`).join('')}
         </section>
 
         <section id="awards">
-            <h2>${t(DATA.ui.nav.awards)}</h2>
+            <h2><i class="fas fa-trophy"></i> ${t(DATA.ui.nav.awards)}</h2>
             <div class="award-category">${t(DATA.awards.national)}</div>
             ${DATA.awards.national.items.map(award => `<div class="award-item">${t(award)}</div>`).join('')}
             <div class="award-category">${t(DATA.awards.provincial)}</div>
@@ -310,29 +348,28 @@ function render() {
         </section>
 
         <section id="projects">
-            <h2>${t(DATA.ui.nav.projects)}</h2>
+            <h2><i class="fas fa-project-diagram"></i> ${t(DATA.ui.nav.projects)}</h2>
             ${DATA.projects.map(proj => `<div class="project-item">${t(proj)}</div>`).join('')}
         </section>
 
         <section id="contact">
-            <h2>${t(DATA.ui.nav.contact)}</h2>
-            <p>${t(DATA.contact.email)}</p>
-            <p>${t(DATA.contact.address)}</p>
-            <p>${t(DATA.contact.lab)}</p>
+            <h2><i class="fas fa-envelope"></i> ${t(DATA.ui.nav.contact)}</h2>
+            <p><i class="fas fa-envelope"></i> ${t(DATA.contact.email)}</p>
+            <p><i class="fas fa-map-marker-alt"></i> ${t(DATA.contact.address)}</p>
+            <p><i class="fas fa-flask"></i> ${t(DATA.contact.lab)}</p>
         </section>
 
         <footer>
             <p>&copy; ${new Date().getFullYear()} ${t(DATA.name)}. ${currentLang === 'zh' ? '最后更新' : 'Last updated'}: ${new Date().toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US')}</p>
         </footer>
+        </div>
     `;
 }
 
 window.onload = render;
 </script>
 
-<div class="container">
-    <div id="app"></div>
-</div>
+<div id="app"></div>
 
 </body>
 </html>
