@@ -95,12 +95,12 @@
 
 const DATA = {
     name: { zh: "郑乐松", en: "Lesong Zheng" },
-    title: { zh: "博士", en: "Ph.D." },
+    title: { zh: "博士后", en: "Postdoctoral Researcher" },
 
     //个人简介
     bio: {
-        zh: "专注于计算机视觉与显微图像分析算法研究,包括染色体、细菌药敏等显微图像的分类、分割、检测等算法的研究。",
-        en: "Focus on the research of computer vision and microscopic image analysis algorithms, including the research on classification, segmentation, detection and other algorithms for microscopic images such as chromosomes and bacterial drug sensitivity tests."
+        zh: "郑乐松，现为中国科学院苏州生物医学工程技术研究所博士后，于2026年4月获中国科学技术大学生物医学工程博士学位。研究聚焦于显微图像智能分析算法，针对细菌药敏检测、染色体核型分析等临床诊断场景中的目标检测与分类问题，提出了系列深度学习解决方案。在方法论层面，针对显微图像的时序演化特性、形态多样性及标注稀缺性等挑战，系统性地探索了对比学习框架下的跨阶段信息建模、基于混合专家机制的多尺度特征解耦、图神经网络引导的拓扑结构感知检测，以及弱监督条件下的自动提示生成策略。相关成果发表于IEEE Internet of Things Journal、Biomedical Signal Processing and Control等领域权威期刊及IEEE国际会议，并参与国家重点研发计划等重大项目的算法研发工作。当前研究致力于构建跨病理对象的可迁移检测框架，并探索信号-图像跨模态学习在医学数据数字化中的应用潜力。",
+        en: "Lesong Zheng is currently a postdoctoral researcher at Suzhou Institute of Biomedical Engineering and Technology, Chinese Academy of Sciences. He received his Ph.D. in Biomedical Engineering from the University of Science and Technology of China in April 2026. His research focuses on intelligent analysis algorithms for microscopic images, addressing object detection and classification challenges in clinical diagnostic scenarios such as bacterial antimicrobial susceptibility testing and chromosome karyotyping. Methodologically, he systematically explores contrastive learning frameworks for cross-stage information modeling, mixture-of-experts mechanisms for multi-scale feature disentanglement, graph neural network-guided topology-aware detection, and automatic prompt generation under weak supervision, targeting the temporal evolution, morphological diversity, and annotation scarcity inherent in microscopic imaging. His work has been published in authoritative journals including IEEE Internet of Things Journal and Biomedical Signal Processing and Control, as well as IEEE international conferences. He has contributed to algorithm development in major projects including the National Key R&D Program. His current research aims to establish transferable detection frameworks across pathological objects and explore the potential of signal-image cross-modal learning in medical data digitization."
     },
 
     // 教育背景
@@ -113,7 +113,7 @@ const DATA = {
     // 外部链接
     links: {
         googleScholar: "https://scholar.google.com/citations?hl=zh-CN&user=Q_lL5vsAAAAJ&view_op=list_works&sortby=pubdate",
-        orcid: "0000-0002-1923-7134" // 占位，请替换为真实ORCID
+        orcid: "0000-0002-1923-7134"
     },
 
     // 论文列表
@@ -266,7 +266,7 @@ function render() {
                     <img src="images/mine.png" alt="My Photo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                 </div>
                 <div class="bio">
-                    <!-- <p>${t(DATA.bio)}</p> -->
+                    <p>${t(DATA.bio)}</p>
                     <h3>${t(DATA.ui.education)}</h3>
                     ${DATA.education.map(edu => `<p>${t(edu)}</p>`).join('')}
                     <div class="external-links">
